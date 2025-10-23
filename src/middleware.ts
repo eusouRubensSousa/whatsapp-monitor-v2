@@ -1,47 +1,25 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
+export function middleware(request: NextRequest) {
+  try {
+    // Por enquanto, vamos desabilitar o middleware para evitar erros
+    // O middleware pode ser reativado depois que o sistema estiver funcionando
+    
+    // Verificar se é uma página que precisa de autenticação
+    const protectedPaths = ['/dashboard', '/groups', '/messages', '/employees', '/analytics']
+    const isProtectedPath = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
+    
+    // Se for uma página protegida, redirecionar para login
+    if (isProtectedPath) {
+      return NextResponse.redirect(new URL('/login', request.url))
     }
-  )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Se não estiver logado e não estiver na página de login, registro ou teste, redirecionar para login
-  if (!user && !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/register') && !request.nextUrl.pathname.startsWith('/test-auth') && !request.nextUrl.pathname.startsWith('/analytics')) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    return NextResponse.next()
+  } catch (error) {
+    console.error('Erro no middleware:', error)
+    // Em caso de erro, permitir que a requisição continue
+    return NextResponse.next()
   }
-
-  // Se estiver logado e estiver na página de login ou registro, redirecionar para dashboard
-  if (user && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
-  }
-
-  return supabaseResponse
 }
 
 export const config = {
