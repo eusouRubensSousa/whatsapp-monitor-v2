@@ -40,6 +40,12 @@ export default function AnalyticsPage() {
       today.setHours(0, 0, 0, 0)
       const startOfDay = today.toISOString()
 
+      // Verificar se o Supabase está configurado
+      if (!supabase) {
+        console.error('Supabase não configurado')
+        return
+      }
+
       // Buscar dados em paralelo
       const [
         groupsResult,

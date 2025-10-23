@@ -21,6 +21,11 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+
       // Criar usuário no Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email,

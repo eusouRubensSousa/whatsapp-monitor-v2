@@ -20,6 +20,11 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,

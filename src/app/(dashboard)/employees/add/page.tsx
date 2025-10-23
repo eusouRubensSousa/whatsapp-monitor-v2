@@ -27,6 +27,11 @@ export default function AddEmployeePage() {
     setLoading(true)
 
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase
         .from('employees')
         .insert([formData])

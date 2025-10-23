@@ -42,6 +42,11 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase não configurado')
+        return
+      }
+      
       const today = new Date()
       today.setHours(0, 0, 0, 0)
       const startOfDay = today.toISOString()

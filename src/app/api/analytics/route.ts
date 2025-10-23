@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, validateSupabaseConfig } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
+    // Verificar se o Supabase está configurado
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
     const { searchParams } = new URL(request.url)
     const period = searchParams.get('period') || 'today'
     

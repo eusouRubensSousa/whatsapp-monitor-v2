@@ -30,6 +30,11 @@ export default function MessagesPage() {
   }, [])
 
   const setupRealtimeSubscription = () => {
+    if (!supabase) {
+      console.error('Supabase não configurado')
+      return
+    }
+    
     const channel = supabase
       .channel('messages_changes')
       .on('postgres_changes', 
@@ -48,12 +53,19 @@ export default function MessagesPage() {
       .subscribe()
 
     return () => {
-      supabase.removeChannel(channel)
+      if (supabase) {
+        supabase.removeChannel(channel)
+      }
     }
   }
 
   const fetchMessages = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase
         .from('messages')
         .select('*')

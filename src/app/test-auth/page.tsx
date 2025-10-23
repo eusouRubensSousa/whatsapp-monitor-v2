@@ -19,6 +19,11 @@ export default function TestAuthPage() {
   }, [])
 
   const checkUser = async () => {
+    if (!supabase) {
+      setResult('Supabase não configurado')
+      return
+    }
+    
     const { data: { user } } = await supabase.auth.getUser()
     setUser(user)
     setResult(user ? `Usuário logado: ${user.email}` : 'Nenhum usuário logado')
@@ -29,6 +34,11 @@ export default function TestAuthPage() {
     setResult('')
     
     try {
+      if (!supabase) {
+        setResult('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -52,6 +62,11 @@ export default function TestAuthPage() {
     setResult('')
     
     try {
+      if (!supabase) {
+        setResult('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -70,6 +85,11 @@ export default function TestAuthPage() {
   }
 
   const handleLogout = async () => {
+    if (!supabase) {
+      setResult('Supabase não configurado')
+      return
+    }
+    
     await supabase.auth.signOut()
     setUser(null)
     setResult('Logout realizado')

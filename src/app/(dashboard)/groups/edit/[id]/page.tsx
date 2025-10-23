@@ -42,6 +42,11 @@ export default function EditGroupPage() {
 
   const fetchGroup = async (id: string) => {
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase
         .from('whatsapp_groups')
         .select('*')
@@ -74,6 +79,11 @@ export default function EditGroupPage() {
     setLoading(true)
 
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase
         .from('whatsapp_groups')
         .update(formData)

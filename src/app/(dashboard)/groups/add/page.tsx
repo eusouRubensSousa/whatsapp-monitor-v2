@@ -25,6 +25,11 @@ export default function AddGroupPage() {
     setLoading(true)
 
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase
         .from('whatsapp_groups')
         .insert([formData])

@@ -4,6 +4,10 @@ import { evolutionAPI } from '@/lib/evolution-api'
 
 export async function GET(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') || 'all'
     
@@ -34,6 +38,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     const body = await request.json()
     const { group_id, group_name, type, owner_id } = body
 
@@ -79,6 +87,10 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     const body = await request.json()
     const { id, group_name, type } = body
 
@@ -112,6 +124,10 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 

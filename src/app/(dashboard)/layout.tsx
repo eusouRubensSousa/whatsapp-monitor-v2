@@ -28,6 +28,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const handleLogout = async () => {
     try {
+      if (!supabase) {
+        toast.error('Supabase não configurado')
+        return
+      }
+      
       await supabase.auth.signOut()
       toast.success('Logout realizado com sucesso!')
       router.push('/login')

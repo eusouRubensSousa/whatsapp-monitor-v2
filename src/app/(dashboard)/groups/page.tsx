@@ -22,6 +22,11 @@ export default function GroupsPage() {
   }, [])
 
   const setupRealtimeSubscription = () => {
+    if (!supabase) {
+      console.error('Supabase não configurado')
+      return
+    }
+    
     const channel = supabase
       .channel('groups_changes')
       .on('postgres_changes', 
@@ -39,12 +44,19 @@ export default function GroupsPage() {
       .subscribe()
 
     return () => {
-      supabase.removeChannel(channel)
+      if (supabase) {
+        supabase.removeChannel(channel)
+      }
     }
   }
 
   const fetchGroups = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase não configurado')
+        return
+      }
+      
       const { data, error } = await supabase
         .from('whatsapp_groups')
         .select('*')

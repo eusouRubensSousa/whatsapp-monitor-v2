@@ -3,6 +3,10 @@ import { supabase } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     const { searchParams } = new URL(request.url)
     const groupId = searchParams.get('group_id')
     const limit = parseInt(searchParams.get('limit') || '50')
@@ -40,6 +44,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     const body = await request.json()
     const { group_id, sender, content, message_type, is_from_employee, employee_id } = body
 

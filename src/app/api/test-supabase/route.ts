@@ -5,6 +5,14 @@ export async function GET(request: NextRequest) {
   try {
     console.log('Testando conexão com Supabase...')
     
+    // Verificar se o Supabase está configurado
+    if (!supabase) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Supabase não configurado - variáveis de ambiente não definidas'
+      }, { status: 500 })
+    }
+    
     // Testar conexão básica
     const { data, error } = await supabase
       .from('users')

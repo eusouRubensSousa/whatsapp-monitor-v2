@@ -58,6 +58,11 @@ export async function POST(request: NextRequest) {
     // Tentar inserir mensagem no Supabase
     console.log('Salvando mensagem do N8N no Supabase...')
     
+    if (!supabase) {
+      console.error('Supabase não configurado')
+      return NextResponse.json({ message: 'Supabase não configurado' }, { status: 500 })
+    }
+    
     try {
       const { error } = await supabase
         .from('messages')
@@ -103,6 +108,11 @@ export async function POST(request: NextRequest) {
 async function updateGroupStats(groupId: string, isFromEmployee: boolean) {
   try {
     console.log('Atualizando estatísticas do grupo do N8N:', groupId)
+    
+    if (!supabase) {
+      console.error('Supabase não configurado')
+      return
+    }
     
     // Buscar grupo existente
     const { data: group, error: groupError } = await supabase
