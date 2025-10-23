@@ -48,7 +48,7 @@ export default function GroupsPage() {
       const { data, error } = await supabase
         .from('whatsapp_groups')
         .select('*')
-        .order('last_message_time', { ascending: false, nullsLast: true })
+        .order('last_message_time', { ascending: false })
 
       if (error) {
         console.error('Erro ao carregar grupos:', error)
