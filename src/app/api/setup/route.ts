@@ -3,6 +3,11 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
+    // Verificar se supabaseAdmin está disponível
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: 'Supabase admin não configurado' }, { status: 500 })
+    }
+
     // Criar usuário de teste
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email: 'admin@whatsapp-monitor.com',
