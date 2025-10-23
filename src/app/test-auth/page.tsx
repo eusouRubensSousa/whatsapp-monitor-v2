@@ -12,7 +12,7 @@ export default function TestAuthPage() {
   const [password, setPassword] = useState('admin123')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState('')
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
     checkUser()
@@ -35,13 +35,13 @@ export default function TestAuthPage() {
       })
 
       if (error) {
-        setResult(`Erro: ${error.message}`)
+        setResult(`Erro: ${error instanceof Error ? error.message : String(error)}`)
       } else {
         setResult(`Login realizado com sucesso! Usuário: ${data.user?.email}`)
         setUser(data.user)
       }
     } catch (error) {
-      setResult(`Erro inesperado: ${error.message}`)
+      setResult(`Erro inesperado: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setLoading(false)
     }
@@ -58,12 +58,12 @@ export default function TestAuthPage() {
       })
 
       if (error) {
-        setResult(`Erro no registro: ${error.message}`)
+        setResult(`Erro no registro: ${error instanceof Error ? error.message : String(error)}`)
       } else {
         setResult(`Registro realizado! Verifique seu email: ${data.user?.email}`)
       }
     } catch (error) {
-      setResult(`Erro inesperado: ${error.message}`)
+      setResult(`Erro inesperado: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setLoading(false)
     }
