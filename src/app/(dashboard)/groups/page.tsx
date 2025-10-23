@@ -57,12 +57,12 @@ export default function GroupsPage() {
 
       // Se não há dados reais, mostrar dados mockados
       if (!data || data.length === 0) {
-        const mockGroups = [
+        const mockGroups: WhatsAppGroup[] = [
           {
             id: '1',
             group_id: '120363123456789012@g.us',
             group_name: 'Grupo Vendas - Lille Consulting',
-            type: 'my_groups',
+            type: 'my_groups' as const,
             owner_id: 'system',
             created_at: new Date().toISOString(),
             last_message: 'Preciso de ajuda com automação WhatsApp',
@@ -73,7 +73,7 @@ export default function GroupsPage() {
             id: '2',
             group_id: '120363123456789013@g.us',
             group_name: 'Suporte Técnico - Clientes',
-            type: 'client_groups',
+            type: 'client_groups' as const,
             owner_id: 'system',
             created_at: new Date().toISOString(),
             last_message: 'Sistema funcionando perfeitamente!',
@@ -84,7 +84,7 @@ export default function GroupsPage() {
             id: '3',
             group_id: '120363123456789014@g.us',
             group_name: 'Clientes VIP - Lille',
-            type: 'client_groups',
+            type: 'client_groups' as const,
             owner_id: 'system',
             created_at: new Date().toISOString(),
             last_message: 'Obrigado pelo atendimento excelente!',
