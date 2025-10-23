@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar Usuário de Teste</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Criar Usuário de Teste</h1>
+    <button onclick="createUser()">Criar Usuário Admin</button>
+    <div id="result"></div>
+
+    <script>
+        const supabaseUrl = 'https://wbsikzebfehhrlsdqdjo.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indic2lremViZmVoaHJsc2RxZGpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNTYwNjEsImV4cCI6MjA3NjczMjA2MX0.aRCDKtmFbTIJXCTrzbdU_u7iDgCiOYP8hq5ObsNBQo4'
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+
+        async function createUser() {
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: 'admin@test.com',
+                    password: 'admin123'
+                })
+
+                if (error) {
+                    document.getElementById('result').innerHTML = 'Erro: ' + error.message
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <h3>Usuário criado com sucesso!</h3>
+                        <p><strong>Email:</strong> admin@test.com</p>
+                        <p><strong>Senha:</strong> admin123</p>
+                        <p>Agora você pode fazer login no sistema!</p>
+                    `
+                }
+            } catch (err) {
+                document.getElementById('result').innerHTML = 'Erro: ' + err.message
+            }
+        }
+    </script>
+</body>
+</html>

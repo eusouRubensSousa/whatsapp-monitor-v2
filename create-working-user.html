@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar Usuário Funcional</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .result { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid #007bff; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 3px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Criar Usuário Funcional para WhatsApp Monitor</h1>
+    
+    <div>
+        <input type="email" id="email" placeholder="Email" value="admin@whatsapp.com">
+        <input type="password" id="password" placeholder="Senha" value="admin123">
+        <button onclick="createUser()">Criar Usuário</button>
+        <button onclick="loginUser()">Fazer Login</button>
+    </div>
+    
+    <div id="result" class="result"></div>
+
+    <script>
+        const supabaseUrl = 'https://wbsikzebfehhrlsdqdjo.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indic2lremViZmVoaHJsc2RxZGpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNTYwNjEsImV4cCI6MjA3NjczMjA2MX0.aRCDKtmFbTIJXCTrzbdU_u7iDgCiOYP8hq5ObsNBQo4'
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+
+        async function createUser() {
+            const resultDiv = document.getElementById('result')
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            
+            resultDiv.innerHTML = '⏳ Criando usuário...'
+            resultDiv.className = 'result'
+            
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/login'
+                    }
+                })
+
+                if (error) {
+                    if (error.message.includes('already registered')) {
+                        resultDiv.innerHTML = `
+                            <h3>✅ Usuário já existe!</h3>
+                            <p><strong>Email:</strong> ${email}</p>
+                            <p><strong>Senha:</strong> ${password}</p>
+                            <p>🎉 Você pode fazer login agora!</p>
+                            <p><a href="/login" target="_blank">Ir para Login</a></p>
+                        `
+                        resultDiv.className = 'result success'
+                    } else {
+                        resultDiv.innerHTML = '❌ Erro: ' + error.message
+                        resultDiv.className = 'result error'
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <h3>✅ Usuário criado com sucesso!</h3>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Senha:</strong> ${password}</p>
+                        <p>🎉 Você pode fazer login agora!</p>
+                        <p><a href="/login" target="_blank">Ir para Login</a></p>
+                    `
+                    resultDiv.className = 'result success'
+                }
+            } catch (err) {
+                resultDiv.innerHTML = '❌ Erro: ' + err.message
+                resultDiv.className = 'result error'
+            }
+        }
+
+        async function loginUser() {
+            const resultDiv = document.getElementById('result')
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            
+            resultDiv.innerHTML = '⏳ Fazendo login...'
+            resultDiv.className = 'result'
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                })
+
+                if (error) {
+                    resultDiv.innerHTML = '❌ Erro no login: ' + error.message
+                    resultDiv.className = 'result error'
+                } else {
+                    resultDiv.innerHTML = `
+                        <h3>✅ Login realizado com sucesso!</h3>
+                        <p><strong>Usuário:</strong> ${data.user.email}</p>
+                        <p>🎉 Você está logado!</p>
+                        <p><a href="/dashboard" target="_blank">Ir para Dashboard</a></p>
+                    `
+                    resultDiv.className = 'result success'
+                }
+            } catch (err) {
+                resultDiv.innerHTML = '❌ Erro: ' + err.message
+                resultDiv.className = 'result error'
+            }
+        }
+    </script>
+</body>
+</html>
