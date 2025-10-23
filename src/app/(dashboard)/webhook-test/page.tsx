@@ -50,7 +50,7 @@ export default function WebhookTestPage() {
         toast.error('Erro ao testar webhook: ' + response.statusText + ' - ' + errorText)
       }
     } catch (error) {
-      toast.error('Erro ao testar webhook: ' + error.message)
+      toast.error('Erro ao testar webhook: ' + (error instanceof Error ? error.message : String(error)))
     } finally {
       setLoading(false)
     }
@@ -81,7 +81,7 @@ export default function WebhookTestPage() {
         toast.error('Erro no webhook simples: ' + response.statusText)
       }
     } catch (error) {
-      toast.error('Erro no webhook simples: ' + error.message)
+      toast.error('Erro no webhook simples: ' + (error instanceof Error ? error.message : String(error)))
     } finally {
       setLoading(false)
     }
@@ -104,7 +104,7 @@ export default function WebhookTestPage() {
         console.error('Erro Supabase:', errorText)
       }
     } catch (error) {
-      toast.error('Erro na conexão com Supabase: ' + error.message)
+      toast.error('Erro na conexão com Supabase: ' + (error instanceof Error ? error.message : String(error)))
     } finally {
       setLoading(false)
     }
