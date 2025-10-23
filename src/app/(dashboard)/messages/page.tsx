@@ -67,14 +67,14 @@ export default function MessagesPage() {
 
       // Se não há dados reais, mostrar dados mockados
       if (!data || data.length === 0) {
-        const mockMessages = [
+        const mockMessages: Message[] = [
           {
             id: '1',
             group_id: '120363123456789012@g.us',
             sender: 'Cliente João',
             content: 'Preciso de ajuda com automação WhatsApp',
             timestamp: new Date().toISOString(),
-            message_type: 'text',
+            message_type: 'text' as const,
             is_from_employee: false
           },
           {
@@ -83,7 +83,7 @@ export default function MessagesPage() {
             sender: 'João Silva',
             content: 'Olá! Como posso ajudá-lo?',
             timestamp: new Date(Date.now() - 300000).toISOString(),
-            message_type: 'text',
+            message_type: 'text' as const,
             is_from_employee: true,
             employee_id: 'user1'
           },
@@ -93,7 +93,7 @@ export default function MessagesPage() {
             sender: 'Cliente Maria',
             content: 'Sistema funcionando perfeitamente!',
             timestamp: new Date(Date.now() - 3600000).toISOString(),
-            message_type: 'text',
+            message_type: 'text' as const,
             is_from_employee: false
           },
           {
@@ -102,7 +102,7 @@ export default function MessagesPage() {
             sender: 'Cliente VIP',
             content: 'Obrigado pelo atendimento excelente!',
             timestamp: new Date(Date.now() - 7200000).toISOString(),
-            message_type: 'text',
+            message_type: 'text' as const,
             is_from_employee: false
           }
         ]
