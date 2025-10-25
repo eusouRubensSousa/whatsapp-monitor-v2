@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { logger } from '@/lib/logger'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -57,7 +58,7 @@ export default function RegisterPage() {
           })
 
         if (userError) {
-          console.error('Erro ao criar entrada de usuário:', userError)
+          logger.error('Erro ao criar entrada de usuário:', userError)
         }
 
         toast.success('Usuário criado com sucesso! Faça login para continuar.')
