@@ -1,14 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { logger } from '@/lib/logger'
 
 export function middleware(request: NextRequest) {
   try {
-    // Por enquanto, vamos desabilitar o middleware para evitar erros
-    // O middleware pode ser reativado depois que o sistema estiver funcionando
-    
     // Verificar se é uma página que precisa de autenticação
     const protectedPaths = ['/dashboard', '/groups', '/messages', '/employees', '/analytics']
     const isProtectedPath = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
-    
+
     // Se for uma página protegida, redirecionar para login
     if (isProtectedPath) {
       return NextResponse.redirect(new URL('/login', request.url))
@@ -16,7 +14,7 @@ export function middleware(request: NextRequest) {
 
     return NextResponse.next()
   } catch (error) {
-    console.error('Erro no middleware:', error)
+    logger.errorProd('Erro no middleware:', error)
     // Em caso de erro, permitir que a requisição continue
     return NextResponse.next()
   }

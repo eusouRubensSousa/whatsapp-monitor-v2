@@ -1,7 +1,8 @@
 import { WhatsAppGroup, Message } from '@/types'
+import { logger } from './logger'
 
-const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL || 'https://webhook.automacao.automacaolille.com.br'
-const EVOLUTION_API_TOKEN = process.env.EVOLUTION_API_TOKEN || 'F218A80A2E55-45D4-ACDB-BA9E3E915601'
+const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL || process.env.NEXT_PUBLIC_EVOLUTION_API_URL || ''
+const EVOLUTION_API_TOKEN = process.env.EVOLUTION_API_TOKEN || process.env.NEXT_PUBLIC_EVOLUTION_API_TOKEN || ''
 
 class EvolutionAPI {
   private baseUrl: string
@@ -36,7 +37,7 @@ class EvolutionAPI {
       const response = await this.makeRequest('/group/fetchAllGroups')
       return response.data || []
     } catch (error) {
-      console.error('Error fetching groups:', error)
+      logger.error('Error fetching groups:', error)
       return []
     }
   }
@@ -46,7 +47,7 @@ class EvolutionAPI {
       const response = await this.makeRequest(`/group/findGroupInfos/${groupId}`)
       return response.data
     } catch (error) {
-      console.error('Error fetching group info:', error)
+      logger.error('Error fetching group info:', error)
       return null
     }
   }
@@ -56,7 +57,7 @@ class EvolutionAPI {
       const response = await this.makeRequest(`/chat/findMessages/${groupId}?limit=${limit}`)
       return response.data || []
     } catch (error) {
-      console.error('Error fetching group messages:', error)
+      logger.error('Error fetching group messages:', error)
       return []
     }
   }
@@ -72,7 +73,7 @@ class EvolutionAPI {
       })
       return true
     } catch (error) {
-      console.error('Error sending message:', error)
+      logger.error('Error sending message:', error)
       return false
     }
   }
@@ -82,7 +83,7 @@ class EvolutionAPI {
       const response = await this.makeRequest('/instance/connectionState/lille consulting')
       return response.data
     } catch (error) {
-      console.error('Error fetching instance info:', error)
+      logger.error('Error fetching instance info:', error)
       return null
     }
   }
